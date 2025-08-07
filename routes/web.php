@@ -3,6 +3,15 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\StudentClassesController;
+use App\Http\Controllers\StudentsController;
+use App\Http\Controllers\TeachersController;
+use App\Http\Controllers\CoursesController;
+use App\Http\Controllers\AcademicsController;
+use App\Http\Controllers\TeacherMarksController;
+use App\Http\Controllers\ResultsController;
+use App\Http\Controllers\AllResultsController;
+use Illuminate\Support\Facades\Auth;
 
 
 /*
@@ -22,35 +31,36 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 /*student routes*/
 Route::middleware(['auth', 'role:teacher,admin'])->group(function () {
-    Route::get('/download-file', [App\Http\Controllers\StudentsController::class, 'downloadfile'])->name('downloadfile');
-    Route::post('/upload-student-data', [App\Http\Controllers\StudentsController::class, 'uploadStudentData'])->name('uploadStudentData');
+    Route::get('/download-file', [StudentsController::class, 'downloadfile'])->name('downloadfile');
+    Route::post('/upload-student-data', [StudentsController::class, 'uploadStudentData'])->name('uploadStudentData');
+    Route::get('/resetPasswordForm', [UserController::class, 'showResetPasswordForm'])->name('showResetPasswordForm');
 });
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('users.index');
-    Route::post('/users', [App\Http\Controllers\UserController::class, 'store'])->name('users.store');
-    Route::put('/users/{user}', [App\Http\Controllers\UserController::class, 'update'])->name('users.update');
-    Route::delete('/users/{user}', [App\Http\Controllers\UserController::class, 'destroy'])->name('users.destroy');
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::post('/users', [UserController::class, 'store'])->name('users.store');
+    Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
+    Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 
-    Route::get('/classes', [App\Http\Controllers\StudentClassesController::class, 'index'])->name('classes.index');
-    Route::post('/classes', [App\Http\Controllers\StudentClassesController::class, 'store'])->name('classes.store');
-    Route::put('/classes/{class}', [App\Http\Controllers\StudentClassesController::class, 'update'])->name('classes.update');
-    Route::delete('/classes/{class}', [App\Http\Controllers\StudentClassesController::class, 'destroy'])->name('classes.destroy');
+    Route::get('/classes', [StudentClassesController::class, 'index'])->name('classes.index');
+    Route::post('/classes', [StudentClassesController::class, 'store'])->name('classes.store');
+    Route::put('/classes/{class}', [StudentClassesController::class, 'update'])->name('classes.update');
+    Route::delete('/classes/{class}', [StudentClassesController::class, 'destroy'])->name('classes.destroy');
 
-    Route::resource('students', App\Http\Controllers\StudentsController::class)->only(['index', 'store', 'update', 'destroy']);
-    Route::resource('teachers', App\Http\Controllers\TeachersController::class)->only(['index', 'store', 'update', 'destroy']);
-    Route::resource('courses', App\Http\Controllers\CoursesController::class);
-    Route::resource('academics', App\Http\Controllers\AcademicsController::class);
+    Route::resource('students', StudentsController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::resource('teachers', TeachersController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::resource('courses', CoursesController::class);
+    Route::resource('academics', AcademicsController::class);
 });
 
 Route::middleware(['auth', 'role:teacher,admin'])->group(function () {
-    Route::get('/teacher/marks-entry', [App\Http\Controllers\TeacherMarksController::class, 'index'])->name('teacher.marks.entry');
-    Route::resource('grades', App\Http\Controllers\TeacherMarksController::class);
-    Route::resource('results', App\Http\Controllers\ResultsController::class);
-    Route::resource('allresults', App\Http\Controllers\AllResultsController::class);
+    Route::get('/teacher/marks-entry', [TeacherMarksController::class, 'index'])->name('teacher.marks.entry');
+    Route::resource('grades', TeacherMarksController::class);
+    Route::resource('results', ResultsController::class);
+    Route::resource('allresults', AllResultsController::class);
 });
 

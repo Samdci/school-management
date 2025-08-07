@@ -15,21 +15,15 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->foreignId('role_id')->nullable()->constrained('roles')->onDelete('set null');
+            $table->string('username')->unique();
+            $table->string('name')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('role')->nullable();
-            $table->string('gender')->nullable();
-            $table->string('phonenumber')->nullable();
-            $table->string('class_name')->nullable();
-            $table->string('guardian_fullname')->nullable();
-            $table->string('guardian_phonenumber')->nullable();
-            $table->string('home_county')->nullable();
-            $table->string('kcpe_marks')->nullable();
-            $table->string('cert_copy')->nullable();
-            $table->string('guardian_relationship')->nullable();
-            $table->foreignId('student_class_id')->nullable()->constrained('student_classes')->onDelete('set null');
+            $table->boolean('is_active')->default(true); // Indicates if the account is active
+            $table->string('two_factor_secret')->nullable(); // For 2FA
+            $table->text('two_factor_recovery_codes')->nullable(); // For 2FA recovery
             $table->rememberToken();
             $table->timestamps();
             $table->boolean('must_change_password')->default(false);

@@ -128,12 +128,6 @@
               <option value="other">Other</option>
             </select>
           </div>
-          <div class="form-group">
-            <label for="role">Role</label>
-            <select class="form-control" id="role" name="role" required>
-              <option value="admin">Admin</option>
-            </select>
-          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-danger pull-left" style="border-radius: 10px;" data-dismiss="modal">Close</button>
@@ -179,8 +173,7 @@
             </form>
         </div>
     </div>
-</div>
-<!-- end of upload Modal -->
+</div>-->
 
 <!-- Edit User Modal -->
 <div class="modal fade" id="editUserModal" tabindex="-1" role="dialog" aria-labelledby="editUserModalLabel" aria-hidden="true">

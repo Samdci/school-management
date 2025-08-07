@@ -21,17 +21,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role',
-        'phonenumber',
-        'gender',
-        'guardian_fullname',
-        'guardian_relationship',
-        'guardian_phonenumber',
-        'home_county',
-        'kcpe_marks',
-        'cert_copy',
-        'student_class_id',
-        'class_name',
+        'role_id',
+        'username',
+        'email_verified_at'
+
     ];
 
 

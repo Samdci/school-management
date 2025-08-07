@@ -4,17 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\StudentClasses;
 use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Response;
-use PhpOffice\PhpSpreadsheet\IOFactory;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
-
-class UserController extends Controller
+class UserAdminController extends Controller
 {
     public function __construct()
     {
@@ -24,7 +19,6 @@ class UserController extends Controller
     public function index()
     {
         $users = User::where('role', 'admin')->where('id', '!=', Auth::id())->get();
-        $classes = StudentClasses::all();
         return view('users', compact('users', 'classes'));
     }
 
@@ -35,7 +29,6 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email',
             'phonenumber' => 'required|string|max:20',
             'gender' => 'required|in:male,female,other',
-            'role' => 'required|in:teacher,student,admin',
         ]);
 
         //$studentclass = StudentClasses::where('id', $validated['student_class_id'])->select('class_name')->first();
@@ -49,7 +42,6 @@ class UserController extends Controller
             'phonenumber' => $validated['phonenumber'],
             'gender' => $validated['gender'],
             'password' => bcrypt($defaultPassword),
-            'role' => $validated['role'],
             'must_change_password' => true,
         ]);
 
@@ -63,7 +55,7 @@ class UserController extends Controller
 
 
         if ($user){
-            alert()->success('User added successfully!', 'Default password: ' . $defaultPassword);
+            alert()->success('Admin added successfully!', 'Default password: ' . $defaultPassword);
             return redirect()->back();
         }
     }
@@ -78,8 +70,6 @@ class UserController extends Controller
             'gender' => 'required|in:male,female,other',
             'role' => 'required|in:teacher,student,admin',
         ]);
-
-        //$studentclass = StudentClasses::where('id', $validated['student_class_id'])->select('class_name')->first();
 
         // Generate a new random password$
         $defaultPassword = 123456789;
@@ -102,6 +92,11 @@ class UserController extends Controller
         $user->delete();
         alert()->success('SuccessAlert','User deleted successfully!');
         return redirect()->back();
+    }
+
+    public function showResetPasswordForm()
+    {
+        return view('users.resetPasswordForm');
     }
 
 

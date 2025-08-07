@@ -52,7 +52,6 @@ class TeachersController extends Controller
             'gender' => 'required|in:male,female,other',
             'home_county' => 'nullable|string|max:255',
             'student_class_id' => 'nullable',
-            'role' => 'required|in:teacher',
         ]);
 
         $teacherclass = StudentClasses::where('id', $validated['student_class_id'])->select('class_name')->first();
@@ -66,7 +65,6 @@ class TeachersController extends Controller
             'home_county' => $validated['home_county'] ?? null,
             'class_name' => $teacherclass['class_name'] ?? null,
             'student_class_id' => $validated['student_class_id'] ?? null,
-            'role' => 'teacher',
             'password' => bcrypt($defaultPassword),
         ]);
 
