@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Teacher;
 use App\Models\StudentClasses;
 
 class TeachersController extends Controller
@@ -21,8 +22,7 @@ class TeachersController extends Controller
 
     public function index()
     {
-        //
-        $teachers = User::where('role', 'teacher')->get();
+        $teachers = Teacher::with(['user', 'studentClass'])->get();
         $classes = StudentClasses::all();
         return view('teachers', compact('teachers', 'classes'));
     }
@@ -44,28 +44,37 @@ class TeachersController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-        {
+    {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:users,username',
             'email' => 'required|email|unique:users,email',
             'phonenumber' => 'required|string|max:20',
             'gender' => 'required|in:male,female,other',
-            'home_county' => 'nullable|string|max:255',
-            'student_class_id' => 'nullable',
+            'homecounty' => 'nullable|string|max:255',
+            'student_class_id' => 'nullable|exists:student_classes,id',
+            'course_id' => 'nullable|exists:courses,id',
         ]);
 
-        $teacherclass = StudentClasses::where('id', $validated['student_class_id'])->select('class_name')->first();
         $defaultPassword = 123456789;
 
-        $teacher = User::create([
+        $user = User::create([
             'name' => $validated['name'],
+            'username' => $validated['username'],
             'email' => $validated['email'],
+            'password' => bcrypt($defaultPassword),
+            'is_active' => true,
+            'must_change_password' => true,
+            'role_id' => 2, // Assuming 2 = teacher, adjust as needed
+        ]);
+
+        $teacher = Teacher::create([
+            'user_id' => $user->id,
             'phonenumber' => $validated['phonenumber'],
             'gender' => $validated['gender'],
-            'home_county' => $validated['home_county'] ?? null,
-            'class_name' => $teacherclass['class_name'] ?? null,
+            'homecounty' => $validated['homecounty'] ?? null,
             'student_class_id' => $validated['student_class_id'] ?? null,
-            'password' => bcrypt($defaultPassword),
+            'course_id' => $validated['course_id'] ?? null,
         ]);
 
         return redirect()->back()->with('success', 'Teacher added successfully! Default password: ' . $defaultPassword);
@@ -102,31 +111,33 @@ class TeachersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
-        $teacher = User::findOrFail($id);
+        $teacher = Teacher::with('user')->findOrFail($id);
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $teacher->id,
+            'username' => 'required|string|max:255|unique:users,username,' . $teacher->user->id,
+            'email' => 'required|email|unique:users,email,' . $teacher->user->id,
             'phonenumber' => 'required|string|max:20',
             'gender' => 'required|in:male,female,other',
-            'home_county' => 'nullable|string|max:255',
-            'student_class_id'=>'nullable',
-
+            'homecounty' => 'nullable|string|max:255',
+            'student_class_id' => 'nullable|exists:student_classes,id',
+            'course_id' => 'nullable|exists:courses,id',
         ]);
 
-        $teacherclass = StudentClasses::where('id', $validated['student_class_id'])->select('class_name')->first();
+        $teacher->user->update([
+            'name' => $validated['name'],
+            'username' => $validated['username'],
+            'email' => $validated['email'],
+        ]);
 
-        $teacher->name = $validated['name'];
-        $teacher->email = $validated['email'];
-        $teacher->phonenumber = $validated['phonenumber'];
-        $teacher->gender = $validated['gender'];
-        $teacher->home_county = $validated['home_county'] ?? null;
-        $teacher->class_name = $teacherclass['class_name'] ?? null;
-        $teacher->student_class_id = $validated['student_class_id'] ?? null;
-        $teacher->save();
+        $teacher->update([
+            'phonenumber' => $validated['phonenumber'],
+            'gender' => $validated['gender'],
+            'homecounty' => $validated['homecounty'] ?? null,
+            'student_class_id' => $validated['student_class_id'] ?? null,
+            'course_id' => $validated['course_id'] ?? null,
+        ]);
 
-
-        return redirect()->back()->with('success', 'Student updated successfully!');
+        return redirect()->back()->with('success', 'Teacher updated successfully!');
     }
 
     /**
@@ -137,10 +148,12 @@ class TeachersController extends Controller
      */
     public function destroy($id)
     {
-        //
-        $teacher = User::findOrFail($id);
+        $teacher = Teacher::with('user')->findOrFail($id);
+        if ($teacher->user) {
+            $teacher->user->delete();
+        }
         $teacher->delete();
-        return redirect()->back()->with('success', 'reacher deleted successfully!');
+        return redirect()->back()->with('success', 'Teacher deleted successfully!');
     }
 }
 

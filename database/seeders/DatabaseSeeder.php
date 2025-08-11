@@ -34,8 +34,11 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
+        $this->call(RoleSeeder::class); // Add this line to run RoleSeeder first
+
         \App\Models\User::firstOrCreate([
             'email' => 'admin@gmail.com',
+            'username' => 'admin',
             'name' => 'Default Admin',
             'password' => bcrypt('admin1234'),
             'role_id' => Role::where('name', 'admin')->first()->id,

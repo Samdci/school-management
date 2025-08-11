@@ -20,7 +20,7 @@
     <div class="box">
         <div class="box-header d-flex justify-content-between align-items-center">
             <h3 class="box-title">Classes List</h3>
-            <button type="button" class="btn btn-primary button" data-toggle="modal" data-target="#addClassModal">
+            <button type="button" class="btn btn-primary button" data-bs-toggle="modal" data-bs-target="#addClassModal">
                 Add Class
             </button>
         </div>
@@ -41,7 +41,7 @@
                             <td>{{ $class->category }}</td>
                             <td>
                                 <div class="dropdown">
-                                    <button class="btn btn-secondary btn-sm button2 button" type="button" id="dropdownMenuButton{{ $class->id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <button class="btn btn-secondary btn-sm button2 button" type="button" id="dropdownMenuButton{{ $class->id }}" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         Actions
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton{{ $class->id }}">
@@ -49,7 +49,7 @@
                                             data-id="{{ $class->id }}"
                                             data-class_name="{{ $class->class_name }}"
                                             data-category="{{ $class->category }}"
-                                            data-toggle="modal" data-target="#editClassModal">
+                                            data-bs-toggle="modal" data-bs-target="#editClassModal">
                                             Edit
                                         </a>
                                         <form action="{{ route('classes.destroy', $class->id) }}" method="POST">
@@ -77,7 +77,7 @@
         @csrf
         <div class="modal-header">
           <h5 class="modal-title" id="addClassModalLabel">Add Class</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -96,7 +96,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-sm btn-danger button pull-left" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-sm btn-danger button pull-left" data-bs-dismiss="modal">Close</button>
           <button type="submit" class="btn btn-sm btn-success button">Add Class</button>
         </div>
       </form>
@@ -113,7 +113,7 @@
         @method('PUT')
         <div class="modal-header">
           <h5 class="modal-title" id="editClassModalLabel">Edit Class</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -132,7 +132,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-sm btn-danger button pull-left" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-sm btn-danger button pull-left" data-bs-dismiss="modal">Close</button>
           <button type="submit" class="btn btm-sm btn-success button">Update Class</button>
         </div>
       </form>

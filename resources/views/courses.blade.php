@@ -69,12 +69,12 @@
                             <td>{{ $course->description }}</td>
                             <td>
                                 <div class="dropdown">
-                                    <button class="btn btn-secondary btn-sm dropdown-toggle button button2" type="button" id="dropdownMenuButton{{ $course->id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <button class="btn btn-secondary btn-sm dropdown-toggle button button2" type="button" id="dropdownMenuButton{{ $course->id }}" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         Actions
                                     </button>
                                     <ul class="dropdown-menu py-0" aria-labelledby="dropdownMenuButton{{ $course->id }}" style="min-width: 120px;">
                                         <li>
-                                            <a href="#" class="dropdown-item text-primary" data-toggle="modal" data-target="#editModal{{ $course->id }}" style="font-weight: 500;">Edit</a>
+                                            <a href="#" class="dropdown-item text-primary" data-bs-toggle="modal" data-bs-target="#editModal{{ $course->id }}" style="font-weight: 500;">Edit</a>
                                         </li>
                                         <li class="dropdown-divider my-0"></li>
                                         <li>
@@ -97,7 +97,7 @@
                                         @csrf
                                         @method('PUT')
                                         <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                             <h4 class="modal-title" id="editModalLabel{{ $course->id }}">Edit Course</h4>
                                         </div>
                                         <div class="modal-body">
@@ -124,7 +124,7 @@
                                             </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-danger pull-left btn-sm button" data-dismiss="modal">Cancel</button>
+                                            <button type="button" class="btn btn-danger pull-left btn-sm button" data-bs-dismiss="modal">Cancel</button>
                                             <button type="submit" class="btn btn-sm btn-success button">Update</button>
                                         </div>
                                     </form>

@@ -34,13 +34,16 @@ public function index(Request $request)
 
     // Check if filters are applied
     if ($selectedGrade || $selectedExam || $selectedYear) {
-        // Fetch students based on the selected grade
-        $students = User::where('role', 'student')
+        // Fetch students based on the selected grade using role relationship
+        $students = User::whereHas('role', function ($q) {
+                $q->where('name', 'student');
+            })
             ->whereHas('studentClass', function ($query) use ($selectedGrade) {
                 if ($selectedGrade) {
                     $query->where('category', $selectedGrade);
                 }
             })
+            ->with(['student', 'studentClass', 'role'])
             ->get();
 
         // Ensure students exist

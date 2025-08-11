@@ -35,8 +35,10 @@ class TeacherMarksController extends Controller
         $userRole = auth()->user()->role ?? null;
 
         if ($selectedClass && $selectedExam && $selectedYear) {
-            // Fetch students in the selected class
-            $students = \App\Models\User::where('role', 'student')->where('student_class_id', $selectedClass)->get();
+            // Fetch students in the selected class using User model with role relationship
+            $students = \App\Models\User::whereHas('role', function ($q) {
+                $q->where('name', 'student');
+            })->where('student_class_id', $selectedClass)->with(['student', 'studentClass', 'role'])->get();
             // Fetch courses for the selected exam (via exam_course)
             $examCourseIds = \App\Models\ExamCourse::where('exam_id', $selectedExam)->pluck('course_id');
             $allCourses = \App\Models\Course::whereIn('id', $examCourseIds)->get();
@@ -63,56 +65,6 @@ class TeacherMarksController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     public function gradeUpload(Request $request)
-    {
-        $file = $request->file('file');
-        $spreadsheet = IOFactory::load($file->getRealPath());
-        $sheet = $spreadsheet->getActiveSheet();
-        $rows = $sheet->toArray();
-
-        foreach($rows as $index => $row){
-            if (empty($row)) continue;
-            // Skip the first row (header)
-            if($index == 0){
-                continue;
-            }
-
-            $defaultPassword = 123456789;
-
-            if(count($row) >= 3 && !empty($row[0])){
-                // Look up class by class_name
-                $class = StudentClasses::where('class_name', $row[11])->first();
-                $student_class_id = $class ? $class->id : null;
-                $user = User::create([
-                    'name' => $row[0] ,
-                    'email' => $row[2] ?? null,
-                    'phonenumber' => $row[3] ?? null,
-                    'gender' => $row[1] ?? null,
-                    'role' => 'student',
-                    'guardian_fullname' => $row[5] ?? null,
-                    'guardian_relationship' => $row[6] ?? null,
-                    'guardian_phonenumber' => $row[7] ?? null,
-                    'home_county' => $row[8] ?? null,
-                    'kcpe_marks' => $row[9] ?? null,
-                    'cert_copy' => $row[10] ?? null,
-                    'class_name' => $row[11] ?? null,
-                    'student_class_id' => $student_class_id,
-                    'password' => bcrypt($defaultPassword),
-                    'must_change_password' => true,
-                ]);
-
-                if($user){
-                    return redirect()->back()->with('success', 'Student data uploaded successfully!');
-                }
-                else{
-                    return redirect()->back()->with('error', 'Student data upload failed!');
-                }
-            }
-        }
-
-        return redirect()->back();
-    }
-
     public function create()
     {
         //
@@ -135,7 +87,6 @@ class TeacherMarksController extends Controller
 
         $marks = $request->input('marks', []);
         $examId = $request->exam_id;
-        $teacherId = auth()->id();
 
         foreach ($marks as $studentId => $courses) {
             foreach ($courses as $courseId => $mark) {
@@ -147,7 +98,6 @@ class TeacherMarksController extends Controller
                     ],
                     [
                         'marks' => $mark,
-                        'teacher_id' => $teacherId,
                     ]
                 );
             }

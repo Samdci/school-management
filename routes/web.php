@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\StudentClassesController;
 use App\Http\Controllers\StudentsController;
 use App\Http\Controllers\TeachersController;
@@ -50,6 +51,13 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('/classes', [StudentClassesController::class, 'store'])->name('classes.store');
     Route::put('/classes/{class}', [StudentClassesController::class, 'update'])->name('classes.update');
     Route::delete('/classes/{class}', [StudentClassesController::class, 'destroy'])->name('classes.destroy');
+
+    // Admin Management Routes (CRUD via modals in admin.blade.php)
+    Route::resource('admins', AdminController::class);
+    Route::post('/admins/bulk-action', [AdminController::class, 'bulkAction'])->name('admins.bulk-action');
+    Route::post('/admins/{admin}/toggle-status', [AdminController::class, 'toggleStatus'])->name('admins.toggle-status');
+    Route::post('/admins/{admin}/force-password-reset', [AdminController::class, 'forcePasswordReset'])->name('admins.force-password-reset');
+    // All admin CRUD is now handled in a single view with Bootstrap 5 modals. Remove any legacy admin routes/views.
 
     Route::resource('students', StudentsController::class)->only(['index', 'store', 'update', 'destroy']);
     Route::resource('teachers', TeachersController::class)->only(['index', 'store', 'update', 'destroy']);

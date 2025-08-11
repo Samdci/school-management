@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('guardian_fullname')->nullable();
             $table->string('guardian_relationship')->nullable();
             $table->string('guardian_phonenumber')->nullable();
+            $table->string('guardian_email')->nullable();
             $table->string('home_county')->nullable();
             $table->string('kcpe_marks')->nullable();
             $table->string('cert_number')->nullable();

@@ -37,8 +37,10 @@ class ResultsController extends Controller
         $selectedYear = $request->year;
     
         if ($selectedClass && $selectedExam && $selectedYear) {
-            // Fetch students in the selected class
-            $students = User::where('role', 'student')->where('student_class_id', $selectedClass)->get();
+            // Fetch students in the selected class using role relationship
+            $students = User::whereHas('role', function ($q) {
+                $q->where('name', 'student');
+            })->where('student_class_id', $selectedClass)->get();
     
             // Ensure students exist
             if ($students->isEmpty()) {
@@ -103,8 +105,10 @@ class ResultsController extends Controller
         $year = $request->year;
         $remarks = $request->input('remarks', []);
 
-        // Get students in the selected class
-        $students = User::where('role', 'student')->where('student_class_id', $classId)->get();
+        // Get students in the selected class using role relationship
+        $students = User::whereHas('role', function ($q) {
+            $q->where('name', 'student');
+        })->where('student_class_id', $classId)->get();
 
         // Get courses for the selected exam
         $examCourseIds = ExamCourse::where('exam_id', $examId)->pluck('course_id');

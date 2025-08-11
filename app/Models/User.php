@@ -23,8 +23,11 @@ class User extends Authenticatable
         'password',
         'role_id',
         'username',
-        'email_verified_at'
-
+        'email_verified_at',
+        'is_active',
+        'two_factor_secret',
+        'two_factor_recovery_codes',
+        'must_change_password'
     ];
 
 
@@ -46,6 +49,8 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'is_active' => 'boolean',
+        'must_change_password' => 'boolean',
     ];
 
     /**
@@ -70,4 +75,31 @@ class User extends Authenticatable
         }
         return $value;
     }
-}
+    /**
+     * Get the role that owns the user.
+     */
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    public function admin()
+    {
+        return $this->hasOne(Admin::class, 'user_id');
+    }
+
+    public function teacher()
+    {
+        return $this->hasOne(Teacher::class, 'user_id');
+    }
+
+    public function student()
+    {
+        return $this->hasOne(Student::class, 'user_id');
+    }
+
+    public function parent()
+    {
+        return $this->hasOne(ParentModel::class, 'user_id');
+    }
+} 

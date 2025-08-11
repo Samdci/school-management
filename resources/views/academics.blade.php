@@ -20,7 +20,7 @@
     <div class="box">
         <div class="box-header">
             <h3 class="box-title">Terms</h3>
-            <button type="button" class="btn btn-primary button pull-right" data-toggle="modal" data-target="#addTermModal">
+            <button type="button" class="btn btn-primary button pull-right" data-bs-toggle="modal" data-bs-target="#addTermModal">
                 Add Term
             </button>
         </div>
@@ -48,12 +48,12 @@
                         <td>{{ $term->status }}</td>
                         <td>
                             <div class="dropdown">
-                                <button class="btn btn-secondary btn-sm dropdown-toggle button button2" type="button" id="dropdownMenuButtonTerm{{ $term->id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <button class="btn btn-secondary btn-sm dropdown-toggle button button2" type="button" id="dropdownMenuButtonTerm{{ $term->id }}" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Actions
                                 </button>
                                 <ul class="dropdown-menu py-0" aria-labelledby="dropdownMenuButtonTerm{{ $term->id }}" style="min-width: 120px;">
                                     <li>
-                                        <a href="#" class="dropdown-item text-primary" data-toggle="modal" data-target="#editTermModal{{ $term->id }}" style="font-weight: 500;">Edit</a>
+                                        <a href="#" class="dropdown-item text-primary" data-bs-toggle="modal" data-bs-target="#editTermModal{{ $term->id }}" style="font-weight: 500;">Edit</a>
                                     </li>
                                     <li class="dropdown-divider my-0"></li>
                                     <li>
@@ -75,7 +75,7 @@
                                     @csrf
                                     @method('PUT')
                                     <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                         <h4 class="modal-title" id="editTermModalLabel{{ $term->id }}">Edit Term</h4>
                                     </div>
                                     <div class="modal-body">
@@ -101,7 +101,7 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-danger pull-left btn-sm button" data-dismiss="modal">Cancel</button>
+                                        <button type="button" class="btn btn-danger pull-left btn-sm button" data-bs-dismiss="modal">Cancel</button>
                                         <button type="submit" class="btn btn-sm btn-success button">Update</button>
                                     </div>
                                 </form>
@@ -121,7 +121,7 @@
                 <form action="{{ route('academics.store') }}" method="POST">
                     @csrf
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title" id="addTermModalLabel">Add Term</h4>
                     </div>
                     <div class="modal-body">
@@ -154,7 +154,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger pull-left btn-sm button" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-danger pull-left btn-sm button" data-bs-dismiss="modal">Cancel</button>
                         <button type="submit" class="btn btn-sm btn-success button">Add</button>
                     </div>
                 </form>
@@ -167,7 +167,7 @@
     <div class="box">
         <div class="box-header">
             <h3 class="box-title">Exams</h3>
-            <button type="button" class="btn btn-primary button pull-right" data-toggle="modal" data-target="#addExamModal">
+            <button type="button" class="btn btn-primary button pull-right" data-bs-toggle="modal" data-bs-target="#addExamModal">
                 Add Exam
             </button>
         </div>
@@ -191,12 +191,12 @@
                         <td>{{ $exam->created_at }}</td>
                         <td>
                             <div class="dropdown">
-                                <button class="btn btn-secondary btn-sm dropdown-toggle button button2" type="button" id="dropdownMenuButtonExam{{ $exam->id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <button class="btn btn-secondary btn-sm dropdown-toggle button button2" type="button" id="dropdownMenuButtonExam{{ $exam->id }}" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Actions
                                 </button>
                                 <ul class="dropdown-menu py-0" aria-labelledby="dropdownMenuButtonExam{{ $exam->id }}" style="min-width: 120px;">
                                     <li>
-                                        <a href="#" class="dropdown-item text-primary" data-toggle="modal" data-target="#editExamModal{{ $exam->id }}" style="font-weight: 500;">Edit</a>
+                                        <a href="#" class="dropdown-item text-primary" data-bs-toggle="modal" data-bs-target="#editExamModal{{ $exam->id }}" style="font-weight: 500;">Edit</a>
                                     </li>
                                     <li class="dropdown-divider my-0"></li>
                                     <li>
@@ -218,7 +218,7 @@
                                     @csrf
                                     @method('PUT')
                                     <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                         <h4 class="modal-title" id="editExamModalLabel{{ $exam->id }}">Edit Exam</h4>
                                     </div>
                                     <div class="modal-body">
@@ -240,7 +240,7 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-danger pull-left btn-sm button" data-dismiss="modal">Cancel</button>
+                                        <button type="button" class="btn btn-danger pull-left btn-sm button" data-bs-dismiss="modal">Cancel</button>
                                         <button type="submit" class="btn btn-sm btn-success button">Update</button>
                                     </div>
                                 </form>
@@ -260,7 +260,7 @@
                 <form action="{{ route('academics.store') }}" method="POST">
                     @csrf
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title" id="addExamModalLabel">Add Exam</h4>
                     </div>
                     <div class="modal-body">
@@ -282,7 +282,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger pull-left btn-sm button" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-danger pull-left btn-sm button" data-bs-dismiss="modal">Cancel</button>
                         <button type="submit" class="btn btn-sm btn-success button">Add</button>
                     </div>
                 </form>
@@ -295,7 +295,7 @@
     <div class="box">
         <div class="box-header">
             <h3 class="box-title">Exam Courses</h3>
-            <button type="button" class="btn btn-primary button pull-right" data-toggle="modal" data-target="#addExamCourseModal">
+            <button type="button" class="btn btn-primary button pull-right" data-bs-toggle="modal" data-bs-target="#addExamCourseModal">
                 Add Exam Course
             </button>
         </div>
@@ -319,12 +319,12 @@
                         <td>{{ $examCourse->exam->term->term_year ?? '' }}</td>
                         <td>
                             <div class="dropdown">
-                                <button class="btn btn-secondary btn-sm dropdown-toggle button button2" type="button" id="dropdownMenuButtonExamCourse{{ $examCourse->id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <button class="btn btn-secondary btn-sm dropdown-toggle button button2" type="button" id="dropdownMenuButtonExamCourse{{ $examCourse->id }}" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Actions
                                 </button>
                                 <ul class="dropdown-menu py-0" aria-labelledby="dropdownMenuButtonExamCourse{{ $examCourse->id }}" style="min-width: 120px;">
                                     <li>
-                                        <a href="#" class="dropdown-item text-primary" data-toggle="modal" data-target="#editExamCourseModal{{ $examCourse->id }}" style="font-weight: 500;">Edit</a>
+                                        <a href="#" class="dropdown-item text-primary" data-bs-toggle="modal" data-bs-target="#editExamCourseModal{{ $examCourse->id }}" style="font-weight: 500;">Edit</a>
                                     </li>
                                     <li class="dropdown-divider my-0"></li>
                                     <li>
@@ -346,7 +346,7 @@
                                     @csrf
                                     @method('PUT')
                                     <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                         <h4 class="modal-title" id="editExamCourseModalLabel{{ $examCourse->id }}">Edit Exam Course</h4>
                                     </div>
                                     <div class="modal-body">
@@ -368,7 +368,7 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-danger pull-left btn-sm button" data-dismiss="modal">Cancel</button>
+                                        <button type="button" class="btn btn-danger pull-left btn-sm button" data-bs-dismiss="modal">Cancel</button>
                                         <button type="submit" class="btn btn-sm btn-success button">Update</button>
                                     </div>
                                 </form>
@@ -388,7 +388,7 @@
                 <form action="{{ route('academics.store') }}" method="POST">
                     @csrf
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title" id="addExamCourseModalLabel">Add Exam Course</h4>
                     </div>
                     <div class="modal-body">
@@ -410,7 +410,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger pull-left btn-sm button" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-danger pull-left btn-sm button" data-bs-dismiss="modal">Cancel</button>
                         <button type="submit" class="btn btn-sm btn-success button">Add</button>
                     </div>
                 </form>
