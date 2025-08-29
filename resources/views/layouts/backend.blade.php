@@ -217,15 +217,15 @@
             .sidebar {
                 transform: translateX(-100%);
             }
-            
+
             .sidebar.show {
                 transform: translateX(0);
             }
-            
+
             .main-content {
                 margin-left: 0;
             }
-            
+
             .mobile-menu-btn {
                 display: block !important;
             }
@@ -292,52 +292,97 @@
                 <h4><i class="fas fa-graduation-cap me-2"></i><span>School MS</span></h4>
             </div>
             <ul class="nav flex-column mt-3">
+                @can('viewAny', App\Models\User::class)
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}">
                         <i class="fas fa-tachometer-alt"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
-                
+                @endcan
+
                 @can('viewAny', App\Models\User::class)
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('admins.*') ? 'active' : '' }}" href="{{ route('admins.index') }}">
-                        <i class="fas fa-user-shield"></i>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle {{ request()->routeIs('admin.*') ? 'active' : '' }}" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="nav-icon fas fa-user-shield"></i>
                         <span>Admin Management</span>
                     </a>
+                    <ul class="dropdown-menu" aria-labelledby="adminDropdown">
+                        <li>
+                            <a class="dropdown-item {{ request()->routeIs('admin.management.*') ? 'active' : '' }}" href="{{ route('admin.management.index') }}">
+                                <i class="far fa-circle nav-icon"></i> Admins
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item {{ request()->routeIs('admin.audit-logs.*') ? 'active' : '' }}" href="{{ route('admin.audit-logs.index') }}">
+                                <i class="far fa-circle nav-icon"></i> Audit Logs
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 @endcan
-                
+
+                @can('viewAny', App\Models\User::class)
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('students.*') ? 'active' : '' }}" href="{{ route('students.index') }}">
                         <i class="fas fa-user-graduate"></i>
                         <span>Students</span>
                     </a>
                 </li>
+                @endcan
+
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('grades.*') ? 'active' : '' }}" href="{{ route('grades.index') }}">
+                        <i class="fas fa-tasks"></i>
+                        <span>Grade Entry</span>
+                    </a>
+                </li>
+
+                @can('viewAny', App\Models\User::class)
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('teacher_courses.*') ? 'active' : '' }}" href="{{ route('teacher_courses.index') }}">
+                        <i class="fas fa-link"></i>
+                        <span>Teacher-Course Assignments</span>
+                    </a>
+                </li>
+                @endcan
+
+                @can('viewAny', App\Models\User::class)
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('teachers.*') ? 'active' : '' }}" href="{{ route('teachers.index') }}">
                         <i class="fas fa-chalkboard-teacher"></i>
                         <span>Teachers</span>
                     </a>
                 </li>
+                @endcan
+
+                @can('viewAny', App\Models\User::class)
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('classes.*') ? 'active' : '' }}" href="{{ route('classes.index') }}">
                         <i class="fas fa-school"></i>
                         <span>Classes</span>
                     </a>
                 </li>
+                @endcan
+
+                @can('viewAny', App\Models\User::class)
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('courses.*') ? 'active' : '' }}" href="{{ route('courses.index') }}">
                         <i class="fas fa-book"></i>
                         <span>Courses</span>
                     </a>
                 </li>
+                @endcan
+
+                @can('viewAny', App\Models\User::class)
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('academics.*') ? 'active' : '' }}" href="{{ route('academics.index') }}">
-                        <i class="fas fa-calendar-academic"></i>
-                        <span>Academic</span>
+                        <i class="fas fa-graduation-cap me-2"></i>
+                        <span>Academics</span>
                     </a>
                 </li>
+                @endcan
+
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('results.*') ? 'active' : '' }}" href="{{ route('results.index') }}">
                         <i class="fas fa-chart-line"></i>
@@ -347,9 +392,9 @@
 
                 <!-- Divider -->
                 <hr class="my-3" style="border-color: rgba(255, 255, 255, 0.1);">
-                
+
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('logout') }}" 
+                    <a class="nav-link" href="{{ route('logout') }}"
                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                         <i class="fas fa-sign-out-alt"></i>
                         <span>Logout</span>
@@ -377,7 +422,7 @@
                             </ol>
                         </nav>
                     </div>
-                    
+
                     <div class="d-flex align-items-center">
                         <!-- Notifications -->
                         <div class="dropdown me-3">
@@ -414,7 +459,7 @@
                                 <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Settings</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
-                                    <a class="dropdown-item" href="{{ route('logout') }}" 
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                         <i class="fas fa-sign-out-alt me-2"></i>Logout
                                     </a>
@@ -544,17 +589,17 @@
                     </div>
                 </div>
             `;
-            
+
             if (!$('#toast-container').length) {
                 $('body').append('<div id="toast-container" class="toast-container position-fixed bottom-0 end-0 p-3"></div>');
             }
-            
+
             const $toast = $(toastHtml);
             $('#toast-container').append($toast);
-            
+
             const toast = new bootstrap.Toast($toast[0]);
             toast.show();
-            
+
             $toast.on('hidden.bs.toast', function() {
                 $(this).remove();
             });

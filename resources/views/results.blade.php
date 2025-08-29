@@ -1,7 +1,7 @@
 @extends('layouts.backend')
 @section('content')
 <div class="container-fluid">
-    <h2>Results & Remarks Entry</h2>
+    <h2>Remarks Entry</h2>
     @if(session('success'))
         <div class="alert alert-success alert-dismissible" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">

@@ -53,7 +53,6 @@ class TeachersController extends Controller
             'gender' => 'required|in:male,female,other',
             'homecounty' => 'nullable|string|max:255',
             'student_class_id' => 'nullable|exists:student_classes,id',
-            'course_id' => 'nullable|exists:courses,id',
         ]);
 
         $defaultPassword = 123456789;
@@ -74,7 +73,6 @@ class TeachersController extends Controller
             'gender' => $validated['gender'],
             'homecounty' => $validated['homecounty'] ?? null,
             'student_class_id' => $validated['student_class_id'] ?? null,
-            'course_id' => $validated['course_id'] ?? null,
         ]);
 
         return redirect()->back()->with('success', 'Teacher added successfully! Default password: ' . $defaultPassword);
@@ -120,7 +118,6 @@ class TeachersController extends Controller
             'gender' => 'required|in:male,female,other',
             'homecounty' => 'nullable|string|max:255',
             'student_class_id' => 'nullable|exists:student_classes,id',
-            'course_id' => 'nullable|exists:courses,id',
         ]);
 
         $teacher->user->update([
@@ -134,7 +131,6 @@ class TeachersController extends Controller
             'gender' => $validated['gender'],
             'homecounty' => $validated['homecounty'] ?? null,
             'student_class_id' => $validated['student_class_id'] ?? null,
-            'course_id' => $validated['course_id'] ?? null,
         ]);
 
         return redirect()->back()->with('success', 'Teacher updated successfully!');

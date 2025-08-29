@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\Auditable;
 
 class Teacher extends Model
 {
-    use HasFactory;
+    use HasFactory, Auditable;
 
     protected $fillable = [
         'user_id',
@@ -15,7 +16,6 @@ class Teacher extends Model
         'phonenumber',
         'student_class_id',
         'homecounty',
-        'course_id',
     ];
 
     /**
@@ -24,6 +24,16 @@ class Teacher extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+    
+    /**
+     * The courses that belong to the teacher.
+     */
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class, 'teacher_courses')
+            ->using(TeacherCourse::class)
+            ->withTimestamps();
     }
 
     /**
@@ -34,8 +44,4 @@ class Teacher extends Model
         return $this->belongsTo(StudentClasses::class, 'student_class_id');
     }
 
-    public function course()
-    {
-        return $this->belongsTo(Course::class);
-    }
 }

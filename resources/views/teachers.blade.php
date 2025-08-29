@@ -31,13 +31,13 @@
                     <thead>
                         <tr>
                             <th>Fullname</th>
-<th>Username</th>
-<th>Email</th>
-<th>Phonenumber</th>
-<th>Gender</th>
-<th>Class Assigned</th>
-<th>Home County</th>
-<th>Action</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Phonenumber</th>
+                            <th>Gender</th>
+                            <th>Class Assigned</th>
+                            <th>Home County</th>
+                            <th>Action</th>
                             <!--<th>Role</th>-->
                         </tr>
                     </thead>
@@ -67,7 +67,6 @@
                                             data-gender="{{ $teacher->gender }}"
                                             data-homecounty="{{ $teacher->homecounty }}"
                                             data-student_class_id="{{ $teacher->student_class_id }}"
-                                            data-course_id="{{ $teacher->course_id }}"
                                             data-bs-toggle="modal" data-bs-target="#editTeacherModal">
                                             Edit
                                         </a>

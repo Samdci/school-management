@@ -13,7 +13,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
-    
+
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h3 class="card-title mb-0">Student Management</h3>
@@ -39,7 +39,10 @@
                             <th>Guardian</th>
                             <th>Guardian Email</th>
                             <th>Guardian Phone</th>
+
+                            @can('viewAny', App\Models\User::class)
                             <th>Actions</th>
+                            @endcan
                         </tr>
                     </thead>
                     <tbody>
@@ -53,6 +56,8 @@
                             <td>{{ $student->guardian_fullname ?? 'N/A' }}</td>
                             <td>{{ $student->guardian_email ?? 'N/A' }}</td>
                             <td>{{ $student->guardian_phonenumber ?? 'N/A' }}</td>
+
+                            @can('viewAny', App\Models\User::class)
                             <td>
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-sm btn-primary viewStudentBtn"
@@ -87,16 +92,19 @@
                                         data-bs-toggle="modal" data-bs-target="#editStudentModal">
                                         <i class="fas fa-edit"></i>
                                     </button>
+
                                     <form action="{{ route('students.destroy', $student->id) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger" 
+                                        <button type="submit" class="btn btn-sm btn-danger"
                                             onclick="return confirm('Are you sure you want to delete this student?')">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </form>
+
                                 </div>
                             </td>
+                            @endcan
                         </tr>
                         @endforeach
                     </tbody>
@@ -259,7 +267,7 @@
                                 <input type="text" class="form-control" id="name" name="name" required>
                             </div>
                             <div class="mb-3">
-                                <label for="email" class="form-label">Email</label>
+                                <label for="email" class="form-label">Backup Email</label>
                                 <input type="email" class="form-control" id="email" name="email">
                             </div>
                             <div class="mb-3">
@@ -374,7 +382,7 @@ $(document).ready(function() {
     // Edit Student button click handler
     $(document).on('click', '.editStudentBtn', function(e) {
         e.preventDefault();
-        
+
         // Get student data from data attributes
         var $btn = $(this);
         var studentData = {
@@ -392,45 +400,58 @@ $(document).ready(function() {
             cert_number: $btn.data('cert-number') || ''
         };
 
-        console.log('Student Data:', studentData); // Debug log
-
         // Set form action URL
         var updateUrl = "{{ route('students.update', ':id') }}";
         updateUrl = updateUrl.replace(':id', studentData.id);
-        
+
         // Populate form fields
         $('#editStudentForm').attr('action', updateUrl);
         $('#edit_id').val(studentData.id);
         $('#edit_name').val(studentData.name);
         $('#edit_email').val(studentData.email);
-        
+
         // Set gender select
         if (studentData.gender) {
             $('#edit_gender').val(studentData.gender);
         }
-        
+
         // Set class select
         if (studentData.student_class_id) {
             $('#edit_student_class_id').val(studentData.student_class_id);
         }
-        
+
         // Populate guardian fields
         $('#edit_guardian_fullname').val(studentData.guardian_fullname);
         $('#edit_guardian_relationship').val(studentData.guardian_relationship);
         $('#edit_guardian_email').val(studentData.guardian_email);
         $('#edit_guardian_phonenumber').val(studentData.guardian_phonenumber);
-        
+
         // Populate additional info
         $('#edit_home_county').val(studentData.home_county);
         $('#edit_kcpe_marks').val(studentData.kcpe_marks);
         $('#edit_cert_number').val(studentData.cert_number);
-        
+
+        // Get the modal instance
+        var editModalEl = document.getElementById('editStudentModal');
+        var modal = bootstrap.Modal.getInstance(editModalEl) || new bootstrap.Modal(editModalEl);
+
         // Show the modal
-        var editModal = new bootstrap.Modal(document.getElementById('editStudentModal'));
-        editModal.show();
-        
+        modal.show();
+
         // Reset validation
         $('#editStudentForm').removeClass('was-validated');
+    });
+
+    // Handle modal hidden event to clean up
+    $('#editStudentModal, #addStudentModal, #uploadModal').on('hidden.bs.modal', function () {
+        // Remove any lingering modal backdrops
+        $('.modal-backdrop').remove();
+        // Reset body class
+        $('body').removeClass('modal-open');
+        $('body').css('padding-right', '');
+        // Reset form
+        $(this).find('form')[0].reset();
+        $(this).find('form').removeClass('was-validated');
     });
 
     // Delete Student with confirmation
@@ -439,15 +460,15 @@ $(document).ready(function() {
         var $btn = $(this);
         var studentId = $btn.data('id');
         var studentName = $btn.data('name') || 'this student';
-        
+
         if (confirm('Are you sure you want to delete ' + studentName + '? This action cannot be undone.')) {
             // Show loading state
             var originalText = $btn.html();
             $btn.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Deleting...').prop('disabled', true);
-            
+
             // Get CSRF token
             var token = $('meta[name="csrf-token"]').attr('content');
-            
+
             // Send delete request
             $.ajax({
                 url: '/students/' + studentId,
@@ -463,7 +484,7 @@ $(document).ready(function() {
                                    '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
                                    '</div>';
                     $('.container-fluid').prepend(alertHtml);
-                    
+
                     // Reload the page after a short delay
                     setTimeout(function() {
                         location.reload();

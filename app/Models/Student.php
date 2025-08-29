@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\Auditable;
 
 class Student extends Model
 {
-    use HasFactory;
+    use HasFactory, Auditable;
 
     protected $fillable = [
         'name',
@@ -36,5 +37,10 @@ class Student extends Model
     public function parents()
     {
         return $this->belongsToMany(ParentModel::class, 'parent_student', 'student_id', 'parent_id');
+    }
+
+    public function grades()
+    {
+        return $this->hasMany(Grade::class);
     }
 }
